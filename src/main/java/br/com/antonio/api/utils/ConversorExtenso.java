@@ -106,7 +106,9 @@ public class ConversorExtenso implements IConversorExtenso {
    * Constrói a ‘string’ para a casa das centenas.
    */
   private void buildCentenas() {
-    if (centenas > 0) {
+    if (centenas == 1 && dezenas == 0 && unidades == 0) {
+      valueToString += "cem";
+    } else if (centenas > 0) {
       valueToString += Centenas.values()[centenas - 1].getNumToString();
       valueToString += this.conjuncao(CasasDecimais.CENTENA);
     }
@@ -116,7 +118,9 @@ public class ConversorExtenso implements IConversorExtenso {
    * Constrói a string para a casa das dezenas.
    */
   private void buildDezenas() {
-    if (dezenas > 0) {
+    if (dezenas == 1) {
+      valueToString += DezenaEspecial.values()[unidades].getNumToString();
+    } else if (dezenas > 0) {
       valueToString += Dezenas.values()[dezenas - 1].getNumToString();
       valueToString += this.conjuncao(CasasDecimais.DEZENA);
     }
@@ -126,14 +130,18 @@ public class ConversorExtenso implements IConversorExtenso {
    * Constrói a ‘string’ para a casa das unidades.
    */
   private void buildUnidades() {
-    if (unidades > 0) {
-      valueToString += Unidades.values()[unidades - 1].getNumToString();
-    } else if (unidades == 0 && dezMilhar == 0 && centenas == 0 && dezenas == 0) {
-      valueToString += "zero";
+    if (dezenas != 1) {
+      if (unidades > 0) {
+        valueToString += Unidades.values()[unidades - 1].getNumToString();
+      } else if (unidades == 0 && dezMilhar == 0 && centenas == 0 && dezenas == 0) {
+        valueToString += "zero";
+      }
     }
   }
 
   /**
+   * Verifica se existem números a ser escritos por extenso após a casa que esta sendo verificada
+   *
    * @param casaAtual é a casa atual que esta chamando a conjunção.
    * @return retorna um " e " se existir casas menores que vão ser escritas por extenso,
    * caso não exista mais casas que devem ser convertidas retorna uma ‘string’ vazia.

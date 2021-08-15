@@ -6,7 +6,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
- * Receber um número inteiro no construtor e construir uma ‘string’ por extenso.
+ * Receber um número inteiro e constrói uma ‘string’ por extenso.
  *
  * @author Antônio Lima Jr
  */
@@ -23,11 +23,11 @@ public class ConversorExtenso implements IConversorExtenso {
   /**
    * Chama os métodos para converter em ‘string’ cada casa decimal.
    *
-   * @return o numero inteiro por extenso
+   * @return o número inteiro por extenso
    */
   @Override
   public String convertToString(int valorRecebido) {
-    this.qntCasasDecimais(valorRecebido);
+    this.verificaSinal(valorRecebido);
     this.buildDezMilhar();
     this.buildCentenas();
     this.buildDezenas();
@@ -42,7 +42,7 @@ public class ConversorExtenso implements IConversorExtenso {
    *
    * @param valorRecebido valor inteiro que deve ser escrito por extenso
    */
-  public void qntCasasDecimais(int valorRecebido) {
+  private void verificaSinal(int valorRecebido) {
     this.valueToString = "";
     if (valorRecebido < 0) {
       valueToString += "menos ";
@@ -94,7 +94,7 @@ public class ConversorExtenso implements IConversorExtenso {
         valueToString += Unidades.values()[(this.dezMilhar - (this.dezMilhar / 10 * 10)) - 1].getNumToString() + " mil";
         valueToString += this.conjuncao(CasasDecimais.DEZMILHAR);
       }
-      //  Constrói a string se sua divisão por 10 for igual a 0, exemplos: 20, 30, 40, 50, 60, 70, 80, 90
+      //  Constrói a ‘string’ se a sua divisão por 10 for igual a 0, exemplos: 20, 30, 40, 50, 60, 70, 80, 90
       else {
         valueToString += Dezenas.values()[(this.dezMilhar / 10) - 1].getNumToString() + " mil";
         valueToString += this.conjuncao(CasasDecimais.DEZMILHAR);
